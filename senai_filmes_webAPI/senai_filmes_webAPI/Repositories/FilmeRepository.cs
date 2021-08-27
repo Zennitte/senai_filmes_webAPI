@@ -28,7 +28,17 @@ namespace senai_filmes_webAPI.Repositories
 
         public void Cadastrar(FilmeDomain novoFilme)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryInsert = $"INSERT INTO FILME (idGenero, tituloFilme) VALUES ({novoFilme.idGenero}, '{novoFilme.tituloFilme}')";
+
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand(queryInsert, con))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Deletar(int idFilme)
@@ -43,7 +53,7 @@ namespace senai_filmes_webAPI.Repositories
             //Declara a SQLConection passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectAll = "SELECT idFilme, idGenero, tituloFilme FROM FILME";
+                string querySelectAll = "SELECT idFilme, ISNULL(idGenero,0), tituloFilme FROM FILME";
 
                 //Abre a conexão com o banco de dados
                 con.Open();
