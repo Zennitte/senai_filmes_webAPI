@@ -33,5 +33,18 @@ namespace senai_filmes_webAPI.Controllers
 
             return Ok(listaGeneros);
         }
+
+        /// <summary>
+        /// Cadastra um novo genero
+        /// </summary>
+        /// <returns>Status code 201 - Created</returns>
+        [HttpPost]
+        public IActionResult Post(GeneroDomain novoGenero)
+        {
+            //Faz a chamada para o metodo cadastrar
+            _generoRepository.Cadastrar(novoGenero);
+
+            return StatusCode(201);
+        }
     }
 }

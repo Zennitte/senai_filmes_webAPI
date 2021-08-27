@@ -10,7 +10,7 @@ namespace senai_filmes_webAPI.Repositories
 {
     public class FilmeRepository : IFilmeRepository
     {
-        private string stringConexao = "Data Source = NOTE0113F1\\SQLEXPRESS; initial catalog = catalogo; user Id = sa; pwd = Senai@132";
+        private string stringConexao = "Data Source = DESKTOP-IU700GH\\SQLEXPRESS; initial catalog = CATALOGO_KAUE; user Id = sa; pwd = senai@132";
         public void AtualizarIdCorpo(FilmeDomain filmeAtualiado)
         {
             throw new NotImplementedException();
@@ -43,7 +43,7 @@ namespace senai_filmes_webAPI.Repositories
             //Declara a SQLConection passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectAll = "SELECT idFilme, nomeFilme, nomeGenero FROM FILME";
+                string querySelectAll = "SELECT idFilme, idGenero, tituloFilme FROM FILME";
 
                 //Abre a conexão com o banco de dados
                 con.Open();

@@ -15,7 +15,7 @@ namespace senai_filmes_webAPI.Repositories
         /// Data Source = Nome do servidor
         /// 
         /// </summary>
-        private string stringConexao = "Data Source = NOTE0113F1\\SQLEXPRESS; initial catalog = catalogo; user Id = sa; pwd = Senai@132";
+        private string stringConexao = "Data Source = DESKTOP-IU700GH\\SQLEXPRESS; initial catalog = CATALOGO_KAUE; user Id = sa; pwd = senai@132";
         //private string stringConexao = "Data Source = NOTE0113F1\\SQLEXPRESS; initial catalog = catalogo; integrated security = true";
         public void AtualizarIdCorpo(GeneroDomain generoAtualizado)
         {
@@ -34,7 +34,18 @@ namespace senai_filmes_webAPI.Repositories
 
         public void Cadastrar(GeneroDomain novoGenero)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryInsert = $"INSERT INTO GENERO (nomeGenero) VALUES ('{novoGenero.nomeGenero}')";
+
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand(queryInsert, con))
+                {
+                    //Executa a query
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Deletar(int idGenero)
