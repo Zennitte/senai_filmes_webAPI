@@ -46,5 +46,18 @@ namespace senai_filmes_webAPI.Controllers
 
             return StatusCode(201);
         }
+
+        /// <summary>
+        /// Deleta um genero existente
+        /// </summary>
+        /// <param name="id">id do genero a ser deletado</param>
+        /// <returns>Um status code No Content</returns>
+        [HttpDelete("excluir")]
+        public IActionResult Delete(GeneroDomain generoDeletado)
+        {
+            _generoRepository.Deletar(generoDeletado.idGenero);
+
+            return NoContent();
+        }
     }
 }

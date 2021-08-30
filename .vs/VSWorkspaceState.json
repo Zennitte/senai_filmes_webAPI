@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\senai_filmes_webAPI",
+    "\\senai_filmes_webAPI\\senai_filmes_webAPI",
+    "\\senai_filmes_webAPI\\senai_filmes_webAPI\\Controllers"
   ],
-  "SelectedNode": "\\senai_filmes_webAPI.sln",
+  "SelectedNode": "\\senai_filmes_webAPI\\senai_filmes_webAPI\\Controllers\\FilmesController.cs",
   "PreviewInSolutionExplorer": false
 }

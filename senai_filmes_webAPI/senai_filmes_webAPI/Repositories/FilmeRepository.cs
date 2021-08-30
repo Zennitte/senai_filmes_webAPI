@@ -30,12 +30,24 @@ namespace senai_filmes_webAPI.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string queryInsert = $"INSERT INTO FILME (idGenero, tituloFilme) VALUES ({novoFilme.idGenero}, '{novoFilme.tituloFilme}')";
+                string queryInsert;
+
+                if (novoFilme.idGenero > 0)
+                {
+                    queryInsert = $"INSERT INTO FILME (idGenero, tituloFilme) VALUES (@idGenero, @tituloFilme)";
+                }
+                else
+                {
+                    queryInsert = $"INSERT INTO FILME (tituloFilme) VALUES (@tituloFilme)";
+                }
 
                 con.Open();
 
                 using (SqlCommand cmd = new SqlCommand(queryInsert, con))
                 {
+                    cmd.Parameters.AddWithValue("@idGenero", novoFilme.idGenero);
+                    cmd.Parameters.AddWithValue("@tituloFilme", novoFilme.tituloFilme);
+
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -53,7 +65,7 @@ namespace senai_filmes_webAPI.Repositories
             //Declara a SQLConection passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectAll = "SELECT idFilme, ISNULL(idGenero,0), tituloFilme FROM FILME";
+                string querySelectAll = "SELECT idFilme, ISNULL(FILME.idGenero,0) AS idGenero, tituloFilme AS Titulo, ISNULL(nomeGenero, 'Não Cadastrado') AS Genero FROM FILME LEFT JOIN GENERO ON FILME.idGenero = Genero.idGenero";
 
                 //Abre a conexão com o banco de dados
                 con.Open();
@@ -73,7 +85,12 @@ namespace senai_filmes_webAPI.Repositories
                         {
                             idFilme = Convert.ToInt32(rdr[0]),
                             idGenero = Convert.ToInt32(rdr[1]),
-                            tituloFilme = rdr[2].ToString()
+                            tituloFilme = rdr[2].ToString(),
+                            genero = new GeneroDomain()
+                            {
+                                idGenero = Convert.ToInt32(rdr[1]),
+                                nomeGenero = rdr[3].ToString()
+                            }
                         };
 
                         listaFilmes.Add(filme);
