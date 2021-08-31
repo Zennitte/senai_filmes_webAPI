@@ -19,17 +19,72 @@ namespace senai_filmes_webAPI.Repositories
         //private string stringConexao = "Data Source = NOTE0113F1\\SQLEXPRESS; initial catalog = catalogo; integrated security = true";
         public void AtualizarIdCorpo(GeneroDomain generoAtualizado)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryUpdateBody = "UPDATE GENERO SET nomeGenero = @nomeGenero WHERE idGenero = @idGenero";
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdateBody, con))
+                {
+                    cmd.Parameters.AddWithValue("@nomeGenero", generoAtualizado.nomeGenero);
+
+                    cmd.Parameters.AddWithValue("@idGenero", generoAtualizado.idGenero);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void AtualizarIdUrl(int idGenero, GeneroDomain generoAtualizado)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string queryUpdateUrl = "UPDATE GENERO SET nomeGenero = @nomeGenero WHERE idGenero = @idGenero";
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdateUrl, con))
+                {
+                    cmd.Parameters.AddWithValue("@nomeGenero", generoAtualizado.nomeGenero);
+
+                    cmd.Parameters.AddWithValue("@idGenero", idGenero);
+
+                    con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public GeneroDomain BuscarPorId(int idGenero)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                string querySearch = "SELECT nomeGenero AS Genero, idGenero AS Id GENERO WHERE idGenero = @idGenero";
+
+                con.Open();
+
+                SqlDataReader rdr;
+
+                using (SqlCommand cmd = new SqlCommand(querySearch))
+                {
+                    cmd.Parameters.AddWithValue("@idGenero", idGenero);
+
+                    rdr = cmd.ExecuteReader();
+
+                    if (rdr.Read())
+                    {
+                        GeneroDomain generoBuscado = new GeneroDomain
+                        {
+                            idGenero = Convert.ToInt32(rdr[1]),
+                            nomeGenero = rdr[0].ToString()
+                        };
+
+                        return generoBuscado;
+                    }
+
+                    return null;
+                }
+            }
         }
 
         public void Cadastrar(GeneroDomain novoGenero)

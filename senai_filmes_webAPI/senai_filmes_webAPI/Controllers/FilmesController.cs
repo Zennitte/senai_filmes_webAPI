@@ -37,5 +37,13 @@ namespace senai_filmes_webAPI.Controllers
 
             return StatusCode(201);
         }
+
+        [HttpDelete("excluir")]
+        public IActionResult Delete(FilmeDomain filmeDeletado)
+        {
+            _filmeRepository.Deletar(filmeDeletado.idFilme);
+
+            return StatusCode(204);
+        }
     }
 }

@@ -34,6 +34,19 @@ namespace senai_filmes_webAPI.Controllers
             return Ok(listaGeneros);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            GeneroDomain generoBuscado = _generoRepository.BuscarPorId(id);
+
+            if (generoBuscado == null)
+            {
+                return NotFound("Nenhum gênero encontrado");
+            }
+
+            return Ok(generoBuscado);
+        }
+
         /// <summary>
         /// Cadastra um novo genero
         /// </summary>
@@ -46,6 +59,84 @@ namespace senai_filmes_webAPI.Controllers
 
             return StatusCode(201);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult PutIdUrl(int id, GeneroDomain generoAtualizado)
+        {
+            if (generoAtualizado.nomeGenero == null || id <= 0)
+            {
+                return BadRequest(
+                    new
+                    {
+                        mensagemErro = "Nome ou id de gênero não foi informado!"
+                    }
+                 );
+            } 
+
+            GeneroDomain generoBuscado = _generoRepository.BuscarPorId(id);
+
+            if (generoBuscado == null)
+            {
+                return NotFound(
+                    new
+                    {
+                        mensagem = "Gênero não encontrado",
+                        erro = true
+                    }
+                ); 
+            }
+
+            try
+            {
+                _generoRepository.AtualizarIdUrl(id, generoAtualizado);
+
+                return NoContent();
+            }
+            catch (Exception erro)
+            {
+                return BadRequest(erro);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult PutIdBody(GeneroDomain generoAtualizado)
+        {
+            if (generoAtualizado.nomeGenero == null || generoAtualizado.idGenero <= 0)
+            {
+                return BadRequest(
+                    new
+                    {
+                        mensagemErro = "Nome ou id de gênero não foi informado!"
+                    }
+                 );
+            }
+
+            GeneroDomain generoBuscado = _generoRepository.BuscarPorId(generoAtualizado.idGenero);
+
+            if (generoBuscado != null)
+            {
+                try
+                {
+                    _generoRepository.AtualizarIdCorpo(generoAtualizado);
+
+                    return NoContent();
+                }
+                catch (Exception codErro)
+                {
+
+                    return BadRequest(codErro);
+                }
+            }
+
+            return NotFound(
+                new
+                {
+                    mensagem = "Gênero não encontrado",
+                    erro = true
+                }
+             );
+        }
+
 
         /// <summary>
         /// Deleta um genero existente
